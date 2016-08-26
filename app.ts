@@ -42,6 +42,7 @@ var server = app.listen(3000, function () {
 
 //creates a new server socket Subject
 const createRxSocket = (connection) => {
+  console.info('createRxSocket...');
   let messages = Observable.fromEvent(connection, 'message', (message) => JSON.parse(message));
   let messageObserver:any = {
     next(message){
@@ -70,7 +71,7 @@ const createRxServer = (options) => {
 
 const socketServer = createRxServer({port: 8081});
 const connections = socketServer.map(createRxSocket);
-
+console.log('asdasd')
 let messageEvents$ = connections.flatMap(connection => connection.map(message => ({connection, message})));
 
 let [subs, unsubs] = messageEvents$.partition(({message:{type}}:any) => type === 'sub');
